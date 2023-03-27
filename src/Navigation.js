@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import SearchResult from './SearchResult';
+import Wishlist from './Wishlist';
 import styles from './Navigation.module.css';
 
 function Navigation() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [showSearch, setShowSearch] = useState(true);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -23,35 +25,53 @@ function Navigation() {
     }
   };
 
+  const handleLinkClick = (event) => {
+    const path = event.currentTarget.pathname;
+    if (path === '/wishlist') {
+      setShowSearch(false);
+    } else if (path === '/') {
+      setShowSearch(true);
+    }
+  };
+
   return (
     <>
       <nav className={styles.nav}>
         <ul className={styles.nav__list}>
           <li className={styles.nav__item}>
-            <Link to="/" className={styles.nav__link}>
+            <Link to="/" className={styles.nav__link} onClick={handleLinkClick}>
               Головна
             </Link>
           </li>
           <li className={styles.nav__item}>
-            <Link to="/wishlist" className={styles.nav__link}>
+            <Link to="/wishlist" className={styles.nav__link} onClick={handleLinkClick}>
               Список бажаного
             </Link>
           </li>
         </ul>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleChange}
-            placeholder="Пошук книг"
-            className={styles.nav__searchInput}
-          />
-          <button type="submit" className={styles.nav__searchButton}>
-            Шукати
-          </button>
-        </form>
+        {showSearch && (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleChange}
+              placeholder="Пошук книг"
+              className={styles.nav__searchInput}
+            />
+            <button type="submit" className={styles.nav__searchButton}>
+              Шукати
+            </button>
+          </form>
+        )}
       </nav>
-      {searchResults.length > 0 && <SearchResult searchResults={searchResults} />}
+      <Switch>
+        <Route path="/wishlist">
+          <Wishlist />
+        </Route>
+        <Route path="/">
+          {searchResults.length > 0 && <SearchResult searchResults={searchResults} />}
+        </Route>
+      </Switch>
     </>
   );
 }

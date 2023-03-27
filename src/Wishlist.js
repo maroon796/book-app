@@ -1,11 +1,7 @@
 import React from 'react';
 
 function Wishlist() {
-  return (
-    <div>
-      <h1>Список бажаного</h1>
-    </div>
-  );
+  return <div></div>;
 }
 
 export default Wishlist;

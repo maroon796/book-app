@@ -3,8 +3,7 @@ import React from 'react';
 function Wishlist() {
   return (
     <div>
-      <h1>Список желаемого</h1>
-      <p>Здесь будет список ваших желаний</p>
+      <h1>Список бажаного</h1>
     </div>
   );
 }
